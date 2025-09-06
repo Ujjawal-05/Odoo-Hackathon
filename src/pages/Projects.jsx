@@ -1,6 +1,7 @@
 import SideBar from '../components/Sidebar';
 import ProjectCard from '../components/ProjectCard';
 import NewProjectDialog from '../components/NewProjectDialog';
+import AddTasksToProjectDialog from '../components/AddTasksToProjectDialog';
 import { Bell, Plus, Search } from 'lucide-react';
 import { useState } from 'react';
 
@@ -8,10 +9,37 @@ export default function Projects() {
   const [projects, setProjects] = useState([
   ]);
 
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  // Dialog states
+  const [isNewProjectDialogOpen, setIsNewProjectDialogOpen] = useState(false);
+  const [isTasksDialogOpen, setIsTasksDialogOpen] = useState(false);
+  const [activeProject, setActiveProject] = useState(null);
 
+  // Handle creating new project - automatically opens Add Tasks dialog
   const handleCreateProject = (newProject) => {
-    setProjects([...projects, newProject]);
+    // Add project to list
+    setProjects(prev => [...prev, newProject]);
+    
+    // Set as active project and open tasks dialog
+    setActiveProject(newProject);
+    setIsNewProjectDialogOpen(false); // Close project dialog
+    setIsTasksDialogOpen(true); // Open tasks dialog
+  };
+
+  // Handle adding tasks to project
+  const handleAddTasks = (tasks) => {
+    console.log(`Added ${tasks.length} tasks to project "${activeProject.title}":`, tasks);
+    // Here you can integrate with your backend API or update state
+    alert(`Successfully added ${tasks.length} tasks to "${activeProject.title}"!`);
+    
+    // Close tasks dialog and reset active project
+    setIsTasksDialogOpen(false);
+    setActiveProject(null);
+  };
+
+  // Handle clicking on existing project card
+  const handleProjectClick = (project) => {
+    setActiveProject(project);
+    setIsTasksDialogOpen(true);
   };
 
   return (
@@ -34,7 +62,7 @@ export default function Projects() {
             {/* New Project Button */}
             <button
               className="flex items-center gap-1 bg-blue-600 px-3 py-1 rounded-lg hover:bg-blue-500 transition"
-              onClick={() => setIsDialogOpen(true)}
+              onClick={() => setIsNewProjectDialogOpen(true)}
             >
               <Plus size={16} /> New Project
             </button>
@@ -53,15 +81,27 @@ export default function Projects() {
               description={project.description}
               status={project.status}
               date={project.date}
+              onClick={() => handleProjectClick(project)}
             />
           ))}
         </div>
 
         {/* New Project Dialog */}
         <NewProjectDialog
-          isOpen={isDialogOpen}
-          onClose={() => setIsDialogOpen(false)}
+          isOpen={isNewProjectDialogOpen}
+          onClose={() => setIsNewProjectDialogOpen(false)}
           onCreate={handleCreateProject}
+        />
+
+        {/* Add Tasks Dialog */}
+        <AddTasksToProjectDialog
+          isOpen={isTasksDialogOpen}
+          onClose={() => {
+            setIsTasksDialogOpen(false);
+            setActiveProject(null);
+          }}
+          onSave={handleAddTasks}
+          projectName={activeProject?.title || activeProject?.name}
         />
       </main>
     </div>

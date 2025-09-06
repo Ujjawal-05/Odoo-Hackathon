@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { X, Plus, Trash2, User, Calendar, FileText } from 'lucide-react';
 
-// Individual Task Input Row Component
 function TaskInputRow({ task, index, onChange, onRemove, canRemove }) {
   return (
     <div className="bg-gray-700 p-4 rounded-lg mb-3">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-        {/* Task Description */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">        
         <div className="md:col-span-1">
           <label className="block text-sm font-medium mb-1">
             <FileText size={14} className="inline mr-1" />
@@ -21,8 +19,7 @@ function TaskInputRow({ task, index, onChange, onRemove, canRemove }) {
             required
           />
         </div>
-
-        {/* Assignee */}
+        
         <div>
           <label className="block text-sm font-medium mb-1">
             <User size={14} className="inline mr-1" />
@@ -37,8 +34,7 @@ function TaskInputRow({ task, index, onChange, onRemove, canRemove }) {
             required
           />
         </div>
-
-        {/* Deadline */}
+        
         <div>
           <label className="block text-sm font-medium mb-1">
             <Calendar size={14} className="inline mr-1" />
@@ -64,8 +60,7 @@ function TaskInputRow({ task, index, onChange, onRemove, canRemove }) {
           </div>
         </div>
       </div>
-
-      {/* Priority & Status Row */}
+      
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
         <div>
           <label className="block text-sm font-medium mb-1">Priority</label>
@@ -179,8 +174,7 @@ export default function AddTasksToProjectDialog({ isOpen, onClose, onSave, proje
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-gray-800 rounded-lg shadow-xl p-6 w-full max-w-4xl mx-4 text-white max-h-[90vh] overflow-y-auto">
-        {/* Header */}
+      <div className="bg-gray-800 rounded-lg shadow-xl p-6 w-full max-w-4xl mx-4 text-white max-h-[90vh] overflow-y-auto">        
         <div className="flex justify-between items-center mb-6">
           <div>
             <h2 className="text-2xl font-bold">Add Tasks to Project</h2>
@@ -197,11 +191,9 @@ export default function AddTasksToProjectDialog({ isOpen, onClose, onSave, proje
             <X size={20} />
           </button>
         </div>
-
-        {/* Form */}
+        
         <form onSubmit={handleSubmit}>
-          <div className="space-y-4">
-            {/* Tasks List */}
+          <div className="space-y-4">            
             <div className="max-h-96 overflow-y-auto">
               {tasks.map((task, index) => (
                 <TaskInputRow
@@ -214,8 +206,7 @@ export default function AddTasksToProjectDialog({ isOpen, onClose, onSave, proje
                 />
               ))}
             </div>
-
-            {/* Add Another Task Button */}
+            
             <button
               type="button"
               onClick={handleAddTask}
@@ -224,8 +215,7 @@ export default function AddTasksToProjectDialog({ isOpen, onClose, onSave, proje
               <Plus size={16} />
               Add Another Task
             </button>
-
-            {/* Task Summary */}
+            
             <div className="bg-gray-700 p-4 rounded-lg">
               <p className="text-sm text-gray-300">
                 <strong>Summary:</strong> {tasks.length} task{tasks.length !== 1 ? 's' : ''} will be added to this project.
@@ -237,8 +227,7 @@ export default function AddTasksToProjectDialog({ isOpen, onClose, onSave, proje
               )}
             </div>
           </div>
-
-          {/* Action Buttons */}
+          
           <div className="flex justify-end gap-3 pt-6">
             <button
               type="button"
