@@ -1,5 +1,5 @@
 import { Bell, Search, Plus, Menu } from "lucide-react";
-import ProjectCard from "./ProjectCard";
+import ProjectCard from "../components/ProjectCard";
 
 export default function FrontPage() {
   return (
