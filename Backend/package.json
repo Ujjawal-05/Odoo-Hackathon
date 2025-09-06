@@ -1,0 +1,32 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Git like website",
+  "homepage": "https://github.com/Ujjawal-05/Odoo-Hackathon#readme",
+  "bugs": {
+    "url": "https://github.com/Ujjawal-05/Odoo-Hackathon/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ujjawal-05/Odoo-Hackathon.git"
+  },
+  "license": "MIT",
+  "author": "Ashutosh Redkar",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.18.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
