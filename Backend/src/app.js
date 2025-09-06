@@ -14,4 +14,8 @@ app.use(cors({
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+import authRoutes from './Routes/auth.routes.js'
+
+app.use("/api/v1/auth", authRoutes)
+
 export default app
