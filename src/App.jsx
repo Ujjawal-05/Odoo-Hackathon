@@ -1,14 +1,18 @@
-import { useState } from 'react'
-import Navbar from './components/Navbar'
-import Dashboard from "./pages/DashBoard";
+import Navbar from './components/Navbar';
 import FrontPage from "./pages/Front";
-import './App.css'
+import Dashboard from "./pages/DashBoard";
+import { Routes, Route } from "react-router-dom";
 
 function App() {
-  return (<>
-      <Dashboard/>
+  return (
+    <>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<FrontPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
     </>
   );
 }
 
-export default App
+export default App;

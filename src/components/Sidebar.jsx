@@ -1,24 +1,46 @@
-import { Menu } from "lucide-react";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-export default function Sidebar() {
+const SideBar = () => {
+  const [collapse, setCollapse] = useState(false);
+
   return (
-    <aside className="w-64 bg-gray-800 p-4 text-white flex flex-col justify-between">
-      <div>
-        <button className="p-2 rounded-lg bg-gray-700 hover:bg-gray-600 mb-6">
-          <Menu />
+    <>    
+      <div className={`flex flex-col h-screen p-4 bg-gray-800 text-xl transition-all duration-300 font-semibold
+          ${collapse ? 'w-20' : 'w-64'}`}
+      >
+        {/* Toggle Button */}
+        <button
+          onClick={() => setCollapse((prev) => !prev)}
+          className="p-2 bg-gray-900 text-white rounded hover:bg-gray-600 transition"
+        >
+          {collapse ? '➡' : '⬅'} {/* Icon changes based on state */}
         </button>
+        
+        <div className="flex flex-col justify-between h-full">
+          {/* Sidebar Content */}
+          <div className={`flex flex-col justify-between h-[30%] mt-4 ${collapse ? 'items-center' : ''}`}>
+            <div className={`${collapse ? 'hidden' : 'block'}`}>
+              <h2>Company</h2>
+            </div>
 
-        <nav className="space-y-3">
-          <p className="cursor-pointer hover:text-blue-400">Projects</p>
-          <p className="cursor-pointer hover:text-blue-400">My Tasks</p>
-        </nav>
-      </div>
+            <div className={`flex flex-col gap-5 ${collapse ? 'items-center' : ''}`}>
+              <Link to="/projects" className={`${collapse ? 'hidden' : 'block'} hover:text-blue-600`}>
+                Projects
+              </Link>
+              <Link to="/tasks" className={`${collapse ? 'hidden' : 'block'} hover:text-blue-600`}>
+                Tasks
+              </Link>
+            </div>
+          </div>
 
-      <div>
-        <p className="text-sm text-gray-400">TU</p>
-        <p className="text-white font-medium">Test User</p>
-        <p className="text-gray-400 text-sm">user@mail</p>
+          <div className={`${collapse ? 'hidden' : 'block'}`}>
+            User Details
+          </div>
+        </div>
       </div>
-    </aside>
+    </>
   );
-}
+};
+
+export default SideBar;

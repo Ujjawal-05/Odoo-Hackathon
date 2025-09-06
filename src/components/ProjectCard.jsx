@@ -6,14 +6,9 @@ export default function ProjectCard({ title, description, status, date }) {
   };
 
   return (
-    <div className="bg-gray-800 p-4 rounded-xl shadow hover:shadow-lg transition">
-      {/* Project Title */}
-      <h3 className="text-lg font-bold mb-2">{title}</h3>
-
-      {/* Description */}
+    <div className="bg-gray-800 p-4 rounded-xl shadow hover:shadow-lg transition cursor-pointer">
+      <h3 className="text-lg font-bold mb-2 text-white">{title}</h3>
       <p className="text-gray-400 text-sm mb-3">{description}</p>
-
-      {/* Status + Date */}
       <div className="flex justify-between items-center">
         <span
           className={`px-3 py-1 text-xs rounded-lg text-white ${
