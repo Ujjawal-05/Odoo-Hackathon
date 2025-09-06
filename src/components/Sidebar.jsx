@@ -29,7 +29,7 @@ const SideBar = () => {
                 Projects
               </Link>
               <Link to="/tasks" className={`${collapse ? 'hidden' : 'block'} hover:text-blue-600`}>
-                Tasks
+                My Tasks
               </Link>
             </div>
           </div>

@@ -7,10 +7,6 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Dashboard() {
   const [projects, setProjects] = useState([
-    { id: 1, title: "Striking Falcon", description: "Single-cell analysis", status: "Open", date: "12 Jul" },
-    { id: 2, title: "True Quail", description: "Clustering pipeline", status: "In Progress", date: "01 Jun" },
-    { id: 3, title: "Witty Moose", description: "Image segmentation", status: "Closed", date: "28 May" },
-    { id: 4, title: "Complete Dinosaur", description: "Report export", status: "Open", date: "18 Apr" },
   ]);
 
   const navigate = useNavigate();

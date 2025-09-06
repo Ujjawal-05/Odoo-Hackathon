@@ -1,13 +1,13 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const location = useLocation();
-  // Mock token check (replace with real logic later)
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    window.location.href = "/"; // Simple refresh to home
+    navigate("/");
   };
 
   return (
@@ -17,9 +17,8 @@ export default function Navbar() {
         <Link to="/">Synergy Sphere</Link>
       </div>
 
-      {/* Navigation Buttons */}
       <div className="flex space-x-4">
-        {/* Show Login & Signup ONLY on Home page when not logged in */}
+        {/* Show Login & Signup ONLY on Home page and when not logged in */}
         {!token && location.pathname === "/" && (
           <>
             <Link
@@ -29,7 +28,7 @@ export default function Navbar() {
               Login
             </Link>
             <Link
-              to="/signup"
+              to="/signup" 
               className="px-4 py-2 rounded-lg bg-green-600 hover:bg-green-500 transition"
             >
               Signup
@@ -37,7 +36,7 @@ export default function Navbar() {
           </>
         )}
 
-        {/* Show Logout if logged in */}
+        {/* Show Logout if logged in (on any page) */}
         {token && (
           <button
             onClick={handleLogout}
