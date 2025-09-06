@@ -22,7 +22,7 @@ class _TaskEditorScreenState extends State<TaskEditorScreen> {
   String? assigneeId;
 
   late final ApiClient api;
-  late Future<List<Map<String, dynamic>>> membersFuture;
+  late Future<List<Map<String, dynamic>>> peopleFuture;
 
   bool get isDone => status == 'done';
 
@@ -30,17 +30,21 @@ class _TaskEditorScreenState extends State<TaskEditorScreen> {
   void initState() {
     super.initState();
     api = ApiClient(token: context.read<AppState>().token);
-    membersFuture = _loadMembers();
+    final isAdmin = context.read<AppState>().isAdmin;
+    peopleFuture = isAdmin ? _loadAllUsers() : _loadMembers();
+  }
+
+  Future<List<Map<String, dynamic>>> _loadAllUsers() async {
+    final list = await api.getUsers(); // admin-only endpoint
+    return list.cast<Map<String, dynamic>>();
   }
 
   Future<List<Map<String, dynamic>>> _loadMembers() async {
     final list = await api.getProjectMembers(widget.projectId);
-    // expect list of { userId, name, role } or similar; normalize to Map<String,dynamic>
     return list.cast<Map<String, dynamic>>();
   }
 
   Future<void> _save() async {
-    // basic validation
     if (titleC.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Title is required')),
@@ -75,46 +79,33 @@ class _TaskEditorScreenState extends State<TaskEditorScreen> {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            TextField(
-              controller: titleC,
-              decoration: const InputDecoration(labelText: 'Title'),
-            ),
+            TextField(controller: titleC, decoration: const InputDecoration(labelText: 'Title')),
             const SizedBox(height: 12),
-            TextField(
-              controller: descC,
-              maxLines: 4,
-              decoration: const InputDecoration(labelText: 'Description'),
-            ),
+            TextField(controller: descC, maxLines: 4, decoration: const InputDecoration(labelText: 'Description')),
             const SizedBox(height: 12),
 
-            // Assignee picker
+            // Assignee picker (admin → all users, others → project members)
             FutureBuilder<List<Map<String, dynamic>>>(
-              future: membersFuture,
+              future: peopleFuture,
               builder: (context, snap) {
                 if (snap.connectionState == ConnectionState.waiting) {
                   return const ListTile(
-                    title: Text('Loading members...'),
-                    trailing: SizedBox(
-                      height: 20, width: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    ),
+                    title: Text('Loading people...'),
+                    trailing: SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2)),
                   );
                 }
                 if (snap.hasError) {
                   return const ListTile(
-                    title: Text('Could not load members'),
+                    title: Text('Could not load people'),
                     subtitle: Text('You can still save and assign later.'),
                   );
                 }
-                final members = snap.data ?? const [];
+                final people = snap.data ?? const [];
                 return DropdownButtonFormField<String>(
                   value: assigneeId,
                   items: [
-                    const DropdownMenuItem<String>(
-                      value: null,
-                      child: Text('Unassigned'),
-                    ),
-                    ...members.map((m) {
+                    const DropdownMenuItem<String>(value: null, child: Text('Unassigned')),
+                    ...people.map((m) {
                       final id = (m['userId'] ?? m['id'] ?? '').toString();
                       final name = (m['name'] ?? m['email'] ?? 'Member').toString();
                       return DropdownMenuItem<String>(
@@ -131,7 +122,6 @@ class _TaskEditorScreenState extends State<TaskEditorScreen> {
 
             const SizedBox(height: 12),
 
-            // Status picker (still available)
             DropdownButtonFormField<String>(
               value: status,
               items: const [
@@ -143,7 +133,6 @@ class _TaskEditorScreenState extends State<TaskEditorScreen> {
               decoration: const InputDecoration(labelText: 'Status'),
             ),
 
-            // Quick “completed” toggle (sets status=done)
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
               title: const Text('Mark as completed'),
@@ -152,8 +141,6 @@ class _TaskEditorScreenState extends State<TaskEditorScreen> {
             ),
 
             const SizedBox(height: 12),
-
-            // Due date
             ListTile(
               contentPadding: EdgeInsets.zero,
               title: Text(due == null ? 'Pick due date' : 'Due: ${df.format(due!)}'),
