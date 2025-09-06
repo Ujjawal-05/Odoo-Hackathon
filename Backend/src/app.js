@@ -15,7 +15,9 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 import authRoutes from './Routes/auth.routes.js'
+import projectRoutes from './Routes/project.routes.js'
 
 app.use("/api/v1/auth", authRoutes)
+app.use("/api/v1/project", projectRoutes)
 
 export default app

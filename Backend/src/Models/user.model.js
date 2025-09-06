@@ -7,8 +7,8 @@ const userSchema = new mongoose.Schema({
     email: String,
     password: String,
     Projects: {
-        type:{type: mongoose.Schema.Types.ObjectId,
-        ref: "Project"},
+        type:[{type: mongoose.Schema.Types.ObjectId,
+        ref: "Project"}],
         default: []
     }
 })
